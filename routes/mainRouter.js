@@ -17,5 +17,6 @@ mainRouter.get("/logout", userController.logoutUser);
 
 mainRouter.post("/register", userController.registerUser);
 mainRouter.post("/login", userController.loginUser);
+mainRouter.post("/createPost", messagesController.addMessage);
 
 module.exports = mainRouter;

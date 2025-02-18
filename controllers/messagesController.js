@@ -24,8 +24,18 @@ async function loadMessagesAsAnon(req, res, next) {
     }
 }
 
+async function addMessage(req, res, next) {
+    try {
+        const { 'title':title, 'message': text } = req.body;
+        await queries.addMsgToDB(title, text);
+        res.redirect("/");
+    } catch (err) {
+        next (err);
+    }
+}
 
 module.exports = {
     loadMessagesAsAnon,
-    loadMessagesAsMember
+    loadMessagesAsMember,
+    addMessage
 };
