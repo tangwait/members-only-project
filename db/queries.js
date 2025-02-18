@@ -1,7 +1,7 @@
 const pool = require("./pool");
 
 async function getAllMessagesAsMember() {
-    const { rows } = await pool.query(`
+    const query = `
         SELECT 
             users.username, 
             messages.title, 
@@ -10,17 +10,17 @@ async function getAllMessagesAsMember() {
         FROM messages
         INNER JOIN users 
         ON users.id = messages.user_id;
-    `);
-    return rows;
+    `;
+    const { rows } = await pool.query(query);
+    return { rows };
 }
 
 async function getAllMessagesAsAnon() {
-    const { rows } = await pool.query(`
-        SELECT title, text
-        FROM messages
-    `);
-    return rows;
+    const query = `SELECT * FROM messages;`;
+    const { rows } = await pool.query(query);
+    return { rows };
 }
+
 
 async function addMsgToDB(title, text) {
     const query = `
