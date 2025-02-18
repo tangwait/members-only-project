@@ -18,6 +18,7 @@ function loadLoginPage(req, res) {
 
 async function registerUser(req, res, next) {
     try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
         await pool.query(
             "INSERT INTO users (username, first_name, last_name, email, password, membership_status) VALUES ($1, $2, $3, $4, $5, $6)",
         [
@@ -25,7 +26,7 @@ async function registerUser(req, res, next) {
             req.body.first_name,
             req.body.last_name,
             req.body.email,
-            req.body.password, 
+            hashedPassword, 
             req.body.membership_status || false,
         ]);
         res.redirect("/");
@@ -43,8 +44,11 @@ passport.use(
         if (!user) {
           return done(null, false, { message: "Incorrect username" });
         }
-        if (user.password !== password) {
-          return done(null, false, { message: "Incorrect password" });
+
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) {
+            return done(null, false, { message: "Incorrect password" });
         }
         return done(null, user);
       } catch(err) {
