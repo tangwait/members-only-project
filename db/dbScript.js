@@ -1,5 +1,12 @@
-CREATE TABLE users (
+const { Client } = require("pg");
+require("dotenv").config();
+
+const SQL =`
+DROP TABLE IF EXISTS messages;
+
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -9,10 +16,29 @@ CREATE TABLE users (
 );
 
 
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     text TEXT NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INT REFERENCES users(id) ON DELETE CASCADE
-);
+    user_id INT REFERENCES users(id) ON DELETE CASCADE);`
+    ;
+
+async function main() {
+    console.log("Seeding database...");
+    const client = new Client({
+      user: process.env.DB_USER,
+      host: process.env.DB_HOST,
+      database: process.env.DB_NAME,
+      password: process.env.DB_PASSWORD,
+      port: process.env.DB_PORT,
+    });
+  
+  
+    await client.connect();
+    await client.query(SQL);
+    await client.end();
+    console.log("Database seeded successfully!");
+  }
+  
+  main();
