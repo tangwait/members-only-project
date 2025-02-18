@@ -1,0 +1,26 @@
+<h1>Message Board</h1>
+
+<ul>
+    <% if (messages && messages.length > 0) { %>
+        <% messages.forEach(message => { %>
+            <li>
+                <strong><%= message.username %></strong> - <%= message.title %>
+                <p><%= message.text %></p>
+            </li>
+        <% }); %>
+    <% } else { %>
+        <p>No messages yet.</p>
+    <% } %>
+</ul>
+
+<h1>Please log in or <a href="/register">register</a></h1>
+
+<form action="/login" method="POST">
+  <label for="username">Username</label>
+  <input id="username" name="username" placeholder="Username" type="text" required />
+
+  <label for="password">Password</label>
+  <input id="password" name="password" type="password" required />
+
+  <button type="submit">Log In</button>
+</form>
