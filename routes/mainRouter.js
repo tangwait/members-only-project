@@ -10,7 +10,7 @@ mainRouter.get("/", (req, res) => {
         return messagesController.loadMessagesAsAnon(req, res);
     }
 });
-mainRouter.get("/register", userController.loadRegisterPage);
+mainRouter.get("/register", userController.validateRegistration, userController.loadRegisterPage);
 mainRouter.get("/login", userController.loadLoginPage);
 mainRouter.get("/logout", userController.logoutUser);
 
