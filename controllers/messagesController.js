@@ -30,7 +30,9 @@ async function loadMessagesAsAnon(req, res, next) {
 async function addMessage(req, res, next) {
     try {
         const { 'title': title, 'message': text } = req.body;
-        await queries.addMsgToDB(title, text);
+        const userId = req.session.user.id;
+
+        await queries.addMsgToDB(title, text, userId);
         res.redirect("/");
     } catch (err) {
         next (err);

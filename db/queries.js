@@ -22,13 +22,13 @@ async function getAllMessagesAsAnon() {
 }
 
 
-async function addMsgToDB(title, text) {
+async function addMsgToDB(title, text, userId) {
     const query = `
-        INSERT INTO messages (title, text)
-        VALUES ($1, $2)
+        INSERT INTO messages (title, text, user_Id)
+        VALUES ($1, $2, $3)
         RETURNING id, title, text, timestamp
         `;
-    await pool.query(query, [title, text]);    
+    await pool.query(query, [title, text, userId]);    
 }
 
 
