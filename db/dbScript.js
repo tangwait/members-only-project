@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS messages (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INT REFERENCES users(id) ON DELETE CASCADE
     );
-    `;
+    `
 
 async function main() {
     console.log("Seeding database...");
