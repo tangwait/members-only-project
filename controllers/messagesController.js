@@ -54,13 +54,20 @@ async function addMessage(req, res, next) {
 
 async function deleteMessage(req, res, next) {
     try {
-        const { messageId } = req.body;
+        console.log("Received messageId:", req.body.messageId);
+
+        const messageId = parseInt(req.body.messageId, 10); 
+        if (isNaN(messageId)) {
+            throw new Error("Invalid message ID");
+        }
+
         await queries.deleteMsgFromDB(messageId);
         res.redirect("/");
     } catch (err) {
-        next (err);
+        next(err);
     }
 }
+
 
 module.exports = {
     loadMessagesAsAdmin,

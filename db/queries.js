@@ -6,7 +6,8 @@ async function getAllMessagesAsMember() {
             users.username, 
             messages.title, 
             messages.text, 
-            messages.timestamp 
+            messages.timestamp,
+            messages.id
         FROM messages
         INNER JOIN users 
         ON users.id = messages.user_id;
