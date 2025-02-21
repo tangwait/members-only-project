@@ -2,8 +2,6 @@ const { Client } = require("pg");
 require("dotenv").config();
 
 const SQL =`
-DROP TABLE IF EXISTS users, messages;
-
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -27,8 +25,8 @@ CREATE TABLE IF NOT EXISTS messages (
 async function main() {
     console.log("Seeding database...");
     const client = new Client({
-      connectionString: process.env.DATABASE_URL || `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-      ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false, // Required for Render
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false, 
   });
   
   
