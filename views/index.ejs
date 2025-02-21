@@ -6,8 +6,11 @@
     <title>Homepage</title>
 </head>
 <body>
-    <% if (locals.user) {%>
-        <%- include('partials/memberMessages', { messages: messages }) %> 
+    <% if (locals.user && locals.user.membership_status) {%>
+        <%- include('partials/adminMessages', { messages: messages }) %> 
+
+    <% } else if (locals.user) { %>
+        <%- include('partials/memberMessages', { messages: messages }) %>
 
     <% } else { %>
         <%- include('partials/anonMessages', { messages: messages }) %>

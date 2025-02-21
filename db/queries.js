@@ -31,9 +31,21 @@ async function addMsgToDB(title, text, userId) {
     await pool.query(query, [title, text, userId]);    
 }
 
+async function deleteMsgFromDB(messageId) {
+    const query = `
+        DELETE FROM messages WHERE id = $1 RETURNING *;
+    `;
+    const { rows } = await pool.query(query, [messageId]);
+
+    if (rows.length === 0) {
+        throw new Error("Message not found");
+    }
+}
+
 
 module.exports = {
     getAllMessagesAsMember,
     getAllMessagesAsAnon,
-    addMsgToDB
+    addMsgToDB,
+    deleteMsgFromDB
 };

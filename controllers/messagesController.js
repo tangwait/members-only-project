@@ -1,5 +1,18 @@
 const queries = require("../db/queries");
 
+async function loadMessagesAsAdmin(req, res, next) {
+    try {
+        const { rows } = await queries.getAllMessagesAsMember();
+        console.log(rows);
+        res.render("index", { 
+            user: req.session.user, 
+            messages: rows || []
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
 async function loadMessagesAsMember(req, res, next) {
     try {
         const { rows } = await queries.getAllMessagesAsMember();
@@ -39,8 +52,20 @@ async function addMessage(req, res, next) {
     }
 }
 
+async function deleteMessage(req, res, next) {
+    try {
+        const { messageId } = req.body;
+        await queries.deleteMsgFromDB(messageId);
+        res.redirect("/");
+    } catch (err) {
+        next (err);
+    }
+}
+
 module.exports = {
+    loadMessagesAsAdmin,
     loadMessagesAsAnon,
     loadMessagesAsMember,
-    addMessage
+    addMessage,
+    deleteMessage
 };

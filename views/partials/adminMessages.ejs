@@ -1,0 +1,34 @@
+<h1>WELCOME BACK, <%= user.username %>!</h1>
+<h1>Message Board:</h1>
+
+<ul>
+    <% if (messages && messages.length > 0) { %>
+        <% messages.forEach(message => { %>
+            <li>
+                <strong><%= message.username %></strong> - <%= message.title %>
+                <p><%= message.text %></p>
+                <p><small>Posted on: <%= new Date(message.timestamp).toLocaleString() %></small></p>
+                <form action="/deletePost" method="POST">
+                    <input type="hidden" name="messageId" value="<%= message.id %>">
+                    <button type="submit">Delete Message</button>
+                </form>
+            </li>
+        <% }); %>
+    <% } else { %>
+        <p>No messages yet. Be the first to post!</p>
+    <% } %>
+</ul>
+
+<form action="/createPost" method="POST">
+    <h2>Send a message!</h2>
+    
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required>
+    
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" rows="3" required></textarea>
+
+    <button type="submit">Submit</button>
+</form>
+
+<a href="/logout">LOG OUT</a>
